@@ -1,0 +1,16 @@
+name: Initialize Vault
+
+on:
+  workflow_dispatch:
+
+jobs:
+  initialize:
+    name: Initialize Vault
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Initialize Vault
+        run: echo "Initializating Vault..."
