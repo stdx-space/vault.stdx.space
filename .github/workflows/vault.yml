@@ -1,0 +1,35 @@
+name: Vault Init / Unseal
+
+on:
+  workflow_dispatch:
+    inputs:
+      intent:
+        type: string
+        required: true
+
+jobs:
+  vault:
+    env:
+      OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      OP_CREDENTIALS_JSON: ${{ secret.OP_CREDENTIALS_JSON }}
+      OP_VAULT_NAME: ${{ vars.OP_VAULT_NAME }}
+      OP_UNSEAL_KEY_FIELD_NAME: ${{ vars.OP_UNSEAL_KEY_FIELD_NAME }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+          tags: tag:github-actions
+          version: 1.60.1
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Vault Init / Unseal
+        uses: dagger/dagger-for-github@v5
+        with:
+          workdir: .github/scripts
+          verb: run
+          args: go run main.go ${{ github.event.inputs.intent }}
+          version: "0.9.3"
