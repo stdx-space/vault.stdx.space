@@ -14,6 +14,7 @@ jobs:
       OP_CREDENTIALS_JSON: ${{ secrets.OP_CREDENTIALS_JSON }}
       OP_VAULT_NAME: ${{ vars.OP_VAULT_NAME }}
       OP_UNSEAL_KEY_FIELD_NAME: ${{ vars.OP_UNSEAL_KEY_FIELD_NAME }}
+      VAULT_ADDR: https://vault.thomasli.work:8200/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
