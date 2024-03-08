@@ -11,7 +11,7 @@ jobs:
   vault:
     env:
       OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
-      OP_CREDENTIALS_JSON: ${{ secret.OP_CREDENTIALS_JSON }}
+      OP_CREDENTIALS_JSON: ${{ secrets.OP_CREDENTIALS_JSON }}
       OP_VAULT_NAME: ${{ vars.OP_VAULT_NAME }}
       OP_UNSEAL_KEY_FIELD_NAME: ${{ vars.OP_UNSEAL_KEY_FIELD_NAME }}
     runs-on: ubuntu-latest
