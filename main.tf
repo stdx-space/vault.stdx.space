@@ -43,6 +43,10 @@ data "cloudflare_zone" "stdx_space" {
   name = "stdx.space"
 }
 
+data "cloudflare_zone" "thomasli_work" {
+  name = "thomasli.work"
+}
+
 locals {
   node            = "pve"
   network         = "10.101.0.0/16"
@@ -70,13 +74,13 @@ data "http" "ssh_pubkeys" {
 # }
 
 module "vault" {
-  source          = "git::https://gitlab.com/narwhl/wip/blueprint.git//modules/vault-oss?ref=fix%2Fvault-sidecar"
+  source          = "git::https://gitlab.com/narwhl/wip/blueprint.git//modules/vault-oss"
   access_key      = "77beef5a54f85ae8c1f177351fe6d7f6"
   secret_key      = var.s3_secret_key
   s3_endpoint     = "https://c814d4c5591b582edf31951b0bd09497.r2.cloudflarestorage.com"
   bucket          = "vault-sandbox"
   acme_email      = "lab@stdx.space"
-  acme_domain     = "vault.stdx.space"
+  acme_domain     = "vault.thomasli.work"
   cf_zone_token   = var.cloudflare_api_token
   cf_dns_token    = var.cloudflare_api_token
   gh_access_token = var.github_pat
@@ -117,7 +121,7 @@ module "proxmox" {
 }
 
 resource "cloudflare_record" "vault" {
-  zone_id = data.cloudflare_zone.stdx_space.id
+  zone_id = data.cloudflare_zone.thomasli_work.id
   name    = "vault"
   type    = "A"
   value   = local.ips[0]
