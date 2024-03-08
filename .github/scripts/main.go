@@ -34,7 +34,9 @@ func main() {
 	opConnectSync := client.Container().
 		From("1password/connect-sync:latest").
 		WithExposedPort(8080).
-		WithMountedSecret("/home/opuser/.op/1password-credentials.json", credentials).
+		WithMountedSecret("/home/opuser/.op/1password-credentials.json", credentials, dagger.ContainerWithMountedSecretOpts{
+			Owner:   "opuser:opuser",
+		}).
 		WithMountedCache("/home/opuser/.op/data", opCache, dagger.ContainerWithMountedCacheOpts{
 			Sharing: dagger.Shared,
 			Owner:   "opuser:opuser",
@@ -45,7 +47,9 @@ func main() {
 	opConnectApi := client.Container().
 		From("1password/connect-api:latest").
 		WithExposedPort(8080).
-		WithMountedSecret("/home/opuser/.op/1password-credentials.json", credentials).
+		WithMountedSecret("/home/opuser/.op/1password-credentials.json", credentials, dagger.ContainerWithMountedSecretOpts{
+			Owner:   "opuser:opuser",
+		}).
 		WithMountedCache("/home/opuser/.op/data", opCache, dagger.ContainerWithMountedCacheOpts{
 			Sharing: dagger.Shared,
 			Owner:   "opuser:opuser",
