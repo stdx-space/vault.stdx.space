@@ -1,0 +1,29 @@
+name: Vault Test
+on:
+  workflow_dispatch:
+    inputs:
+      intent:
+        type: string
+        required: true
+
+jobs:
+  vault:
+    env:
+      OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      OP_CREDENTIALS_JSON: ${{ secrets.OP_CREDENTIALS_JSON }}
+      OP_VAULT_NAME: ${{ vars.OP_VAULT_NAME }}
+      OP_UNSEAL_KEY_FIELD_NAME: ${{ vars.OP_UNSEAL_KEY_FIELD_NAME }}
+      VAULT_ADDR: https://vault.thomasli.work:8200/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+          tags: tag:github-actions
+          version: 1.60.1
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - run: curl https://vault.thomasli.work:8200/sys/health
